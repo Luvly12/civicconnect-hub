@@ -16,14 +16,12 @@ import { AppShell } from "../components/Layout";
 
 function NotFoundComponent() {
   return (
-    <AppShell>
-      <div className="flex min-h-[60vh] items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-7xl font-bold text-primary">404</h1>
-          <p className="mt-2 text-muted-foreground">Page not found</p>
-        </div>
+    <div className="flex min-h-[60vh] items-center justify-center">
+      <div className="text-center">
+        <h1 className="text-7xl font-bold text-primary">404</h1>
+        <p className="mt-2 text-muted-foreground">Page not found</p>
       </div>
-    </AppShell>
+    </div>
   );
 }
 
