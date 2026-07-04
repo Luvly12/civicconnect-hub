@@ -14,7 +14,105 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      donations: {
+        Row: {
+          amount: number
+          cause: string
+          created_at: string
+          id: string
+          status: string
+          transaction_ref: string | null
+          user_id: string | null
+        }
+        Insert: {
+          amount: number
+          cause: string
+          created_at?: string
+          id?: string
+          status?: string
+          transaction_ref?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          amount?: number
+          cause?: string
+          created_at?: string
+          id?: string
+          status?: string
+          transaction_ref?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      issues: {
+        Row: {
+          category: string
+          created_at: string
+          description: string
+          id: string
+          image_url: string | null
+          is_anonymous: boolean
+          lat: number | null
+          lng: number | null
+          locality: string | null
+          severity: string
+          status: string
+          title: string
+          user_id: string | null
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          description: string
+          id?: string
+          image_url?: string | null
+          is_anonymous?: boolean
+          lat?: number | null
+          lng?: number | null
+          locality?: string | null
+          severity?: string
+          status?: string
+          title: string
+          user_id?: string | null
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string
+          id?: string
+          image_url?: string | null
+          is_anonymous?: boolean
+          lat?: number | null
+          lng?: number | null
+          locality?: string | null
+          severity?: string
+          status?: string
+          title?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          full_name: string | null
+          id: string
+          locality: string | null
+        }
+        Insert: {
+          created_at?: string
+          full_name?: string | null
+          id: string
+          locality?: string | null
+        }
+        Update: {
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          locality?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
