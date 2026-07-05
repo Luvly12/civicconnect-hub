@@ -17,7 +17,7 @@ function ReportPage() {
     title: "",
     description: "",
     category: CATEGORIES[0],
-    severity: "Medium" as (typeof SEVERITIES)[number],
+    severity: "medium" as (typeof SEVERITIES)[number],
     is_anonymous: false,
     image_name: "",
   });
