@@ -158,20 +158,32 @@ function MapPage() {
           )}
         </div>
 
+        {err && <div className="rounded-lg bg-destructive/10 px-3 py-2 text-sm text-destructive">{err}</div>}
+
         <div className="rounded-xl border border-border bg-card">
           <div className="border-b border-border p-4 text-sm font-semibold">Recent Reports</div>
           <div className="divide-y divide-border">
-            {filtered.slice(0, 8).map((i) => (
-              <div key={i.id} className="flex items-center justify-between px-4 py-3">
-                <div>
-                  <div className="text-sm font-medium">{i.title}</div>
-                  <div className="text-xs text-muted-foreground">{i.category} · {i.locality}</div>
+            {loading ? (
+              [1, 2, 3, 4].map((i) => (
+                <div key={i} className="px-4 py-3">
+                  <div className="h-4 w-2/3 animate-pulse rounded bg-muted" />
+                  <div className="mt-2 h-3 w-1/3 animate-pulse rounded bg-muted" />
                 </div>
-                <StatusBadge status={i.status} />
+              ))
+            ) : filtered.length === 0 ? (
+              <div className="p-6 text-center text-sm text-muted-foreground">
+                {list.length === 0 ? "No issues reported yet. Be the first to report one!" : "No issues match your filters."}
               </div>
-            ))}
-            {filtered.length === 0 && (
-              <div className="p-6 text-center text-sm text-muted-foreground">No issues match your filters.</div>
+            ) : (
+              filtered.slice(0, 8).map((i) => (
+                <div key={i.id} className="flex items-center justify-between px-4 py-3">
+                  <div>
+                    <div className="text-sm font-medium">{i?.title}</div>
+                    <div className="text-xs text-muted-foreground">{i?.category} · {i?.locality ?? "—"}</div>
+                  </div>
+                  <StatusBadge status={i.status} />
+                </div>
+              ))
             )}
           </div>
         </div>
