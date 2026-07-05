@@ -156,7 +156,7 @@ function ReportPage() {
                       key={s}
                       type="button"
                       onClick={() => setForm({ ...form, severity: s })}
-                      className={`rounded-lg border-2 py-2 text-sm font-semibold transition ${
+                      className={`rounded-lg border-2 py-2 text-sm font-semibold capitalize transition ${
                         active ? `${tone} bg-current/10` : "border-border text-muted-foreground hover:border-foreground/40"
                       }`}
                     >
