@@ -107,7 +107,7 @@ function MapPage() {
         </div>
 
         <div className="mt-5 rounded-lg bg-primary/5 p-3 text-xs text-primary">
-          Showing <strong>{filtered.length}</strong> of {issues.length} issues
+          Showing <strong>{filtered.length}</strong> of {list.length} issues
         </div>
       </aside>
 
