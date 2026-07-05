@@ -74,7 +74,7 @@ function ReportPage() {
             onClick={() => {
               setDone(false);
               setStep(1);
-              setForm({ title: "", description: "", category: CATEGORIES[0], severity: "Medium", is_anonymous: false, image_name: "" });
+              setForm({ title: "", description: "", category: CATEGORIES[0], severity: "medium", is_anonymous: false, image_name: "" });
             }}
             className="rounded-lg border border-border px-4 py-2 text-sm font-semibold"
           >
