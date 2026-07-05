@@ -150,7 +150,7 @@ function ReportPage() {
               <div className="mt-2 grid grid-cols-3 gap-2">
                 {SEVERITIES.map((s) => {
                   const active = form.severity === s;
-                  const tone = s === "High" ? "border-destructive text-destructive" : s === "Medium" ? "border-warning text-warning" : "border-success text-success";
+                  const tone = s === "high" ? "border-destructive text-destructive" : s === "medium" ? "border-warning text-warning" : "border-success text-success";
                   return (
                     <button
                       key={s}
