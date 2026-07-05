@@ -50,9 +50,11 @@ function MapPage() {
     })();
   }, []);
 
+  const loading = issues === null;
+  const list = issues ?? [];
   const filtered = useMemo(
-    () => issues.filter((i) => (cat.size === 0 || cat.has(i.category)) && (stat.size === 0 || stat.has(i.status))),
-    [issues, cat, stat]
+    () => list.filter((i) => (cat.size === 0 || cat.has(i.category)) && (stat.size === 0 || stat.has(i.status))),
+    [list, cat, stat]
   );
 
   function toggle(set: Set<string>, setSet: (s: Set<string>) => void, v: string) {
