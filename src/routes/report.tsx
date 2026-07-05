@@ -7,7 +7,7 @@ import { CheckCircle2, ImagePlus, ChevronLeft, ChevronRight } from "lucide-react
 export const Route = createFileRoute("/report")({ component: ReportPage });
 
 const CATEGORIES = ["Potholes", "Water Leaks", "Broken Streetlights", "Garbage Accumulation", "Drainage Blockage", "Road Damage", "Sanitation"];
-const SEVERITIES = ["Low", "Medium", "High"] as const;
+const SEVERITIES = ["low", "medium", "high"] as const;
 
 function ReportPage() {
   const { user, loading } = useAuth();
