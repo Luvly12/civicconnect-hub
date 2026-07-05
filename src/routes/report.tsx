@@ -7,7 +7,7 @@ import { CheckCircle2, ImagePlus, ChevronLeft, ChevronRight } from "lucide-react
 export const Route = createFileRoute("/report")({ component: ReportPage });
 
 const CATEGORIES = ["Potholes", "Water Leaks", "Broken Streetlights", "Garbage Accumulation", "Drainage Blockage", "Road Damage", "Sanitation"];
-const SEVERITIES = ["Low", "Medium", "High"] as const;
+const SEVERITIES = ["low", "medium", "high"] as const;
 
 function ReportPage() {
   const { user, loading } = useAuth();
@@ -17,7 +17,7 @@ function ReportPage() {
     title: "",
     description: "",
     category: CATEGORIES[0],
-    severity: "Medium" as (typeof SEVERITIES)[number],
+    severity: "medium" as (typeof SEVERITIES)[number],
     is_anonymous: false,
     image_name: "",
   });
@@ -74,7 +74,7 @@ function ReportPage() {
             onClick={() => {
               setDone(false);
               setStep(1);
-              setForm({ title: "", description: "", category: CATEGORIES[0], severity: "Medium", is_anonymous: false, image_name: "" });
+              setForm({ title: "", description: "", category: CATEGORIES[0], severity: "medium", is_anonymous: false, image_name: "" });
             }}
             className="rounded-lg border border-border px-4 py-2 text-sm font-semibold"
           >
@@ -150,13 +150,13 @@ function ReportPage() {
               <div className="mt-2 grid grid-cols-3 gap-2">
                 {SEVERITIES.map((s) => {
                   const active = form.severity === s;
-                  const tone = s === "High" ? "border-destructive text-destructive" : s === "Medium" ? "border-warning text-warning" : "border-success text-success";
+                  const tone = s === "high" ? "border-destructive text-destructive" : s === "medium" ? "border-warning text-warning" : "border-success text-success";
                   return (
                     <button
                       key={s}
                       type="button"
                       onClick={() => setForm({ ...form, severity: s })}
-                      className={`rounded-lg border-2 py-2 text-sm font-semibold transition ${
+                      className={`rounded-lg border-2 py-2 text-sm font-semibold capitalize transition ${
                         active ? `${tone} bg-current/10` : "border-border text-muted-foreground hover:border-foreground/40"
                       }`}
                     >

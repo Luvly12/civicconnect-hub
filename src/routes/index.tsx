@@ -22,22 +22,32 @@ function Dashboard() {
   const [globalStats, setGlobalStats] = useState<Stats>({ total: 0, resolved: 0 });
 
   useEffect(() => {
-    supabase.from("issues").select("status", { count: "exact" }).then(({ data }) => {
-      const total = data?.length ?? 0;
-      const resolved = data?.filter((d: any) => d.status === "Resolved").length ?? 0;
-      setGlobalStats({ total, resolved });
-    });
+    (async () => {
+      try {
+        const { data } = await supabase.from("issues").select("status");
+        const total = data?.length ?? 0;
+        const resolved = data?.filter((d: any) => d?.status === "Resolved").length ?? 0;
+        setGlobalStats({ total, resolved });
+      } catch (e) {
+        console.error("global stats fetch failed", e);
+      }
+    })();
   }, []);
 
   useEffect(() => {
     if (!user) return;
-    supabase.from("profiles").select("full_name, locality").eq("id", user.id).maybeSingle()
-      .then(({ data }) => setProfile(data as Profile | null));
-    supabase.from("issues").select("status").eq("user_id", user.id).then(({ data }) => {
-      const total = data?.length ?? 0;
-      const resolved = data?.filter((d: any) => d.status === "Resolved").length ?? 0;
-      setStats({ total, resolved });
-    });
+    (async () => {
+      try {
+        const { data: p } = await supabase.from("profiles").select("full_name, locality").eq("id", user.id).maybeSingle();
+        setProfile((p as Profile | null) ?? null);
+        const { data: mine } = await supabase.from("issues").select("status").eq("user_id", user.id);
+        const total = mine?.length ?? 0;
+        const resolved = mine?.filter((d: any) => d?.status === "Resolved").length ?? 0;
+        setStats({ total, resolved });
+      } catch (e) {
+        console.error("user stats fetch failed", e);
+      }
+    })();
   }, [user]);
 
   if (loading) return <div className="py-20 text-center text-muted-foreground">Loading...</div>;

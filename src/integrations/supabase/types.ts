@@ -14,6 +14,39 @@ export type Database = {
   }
   public: {
     Tables: {
+      discussions: {
+        Row: {
+          author_name: string
+          body: string
+          comments: Json
+          created_at: string
+          id: string
+          locality: string | null
+          title: string
+          user_id: string | null
+        }
+        Insert: {
+          author_name?: string
+          body: string
+          comments?: Json
+          created_at?: string
+          id?: string
+          locality?: string | null
+          title: string
+          user_id?: string | null
+        }
+        Update: {
+          author_name?: string
+          body?: string
+          comments?: Json
+          created_at?: string
+          id?: string
+          locality?: string | null
+          title?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       donations: {
         Row: {
           amount: number
@@ -41,6 +74,36 @@ export type Database = {
           status?: string
           transaction_ref?: string | null
           user_id?: string | null
+        }
+        Relationships: []
+      }
+      events: {
+        Row: {
+          created_at: string
+          event_date: string
+          event_time: string
+          id: string
+          location: string
+          title: string
+          volunteers: number
+        }
+        Insert: {
+          created_at?: string
+          event_date: string
+          event_time: string
+          id?: string
+          location: string
+          title: string
+          volunteers?: number
+        }
+        Update: {
+          created_at?: string
+          event_date?: string
+          event_time?: string
+          id?: string
+          location?: string
+          title?: string
+          volunteers?: number
         }
         Relationships: []
       }
@@ -118,7 +181,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      rsvp_event: { Args: { event_id: string }; Returns: undefined }
     }
     Enums: {
       [_ in never]: never

@@ -27,20 +27,34 @@ const STATUS_COLOR: Record<string, string> = {
 };
 
 function MapPage() {
-  const [issues, setIssues] = useState<Issue[]>([]);
+  const [issues, setIssues] = useState<Issue[] | null>(null);
   const [cat, setCat] = useState<Set<string>>(new Set());
   const [stat, setStat] = useState<Set<string>>(new Set());
   const [selected, setSelected] = useState<Issue | null>(null);
+  const [err, setErr] = useState<string | null>(null);
 
   useEffect(() => {
-    supabase.from("issues").select("*").order("created_at", { ascending: false }).then(({ data }) => {
-      setIssues((data as Issue[]) ?? []);
-    });
+    (async () => {
+      try {
+        const { data, error } = await supabase
+          .from("issues")
+          .select("*")
+          .order("created_at", { ascending: false });
+        if (error) throw error;
+        setIssues((data as Issue[]) ?? []);
+      } catch (e: any) {
+        console.error("issues fetch failed", e);
+        setErr(e?.message ?? "Failed to load issues");
+        setIssues([]);
+      }
+    })();
   }, []);
 
+  const loading = issues === null;
+  const list = issues ?? [];
   const filtered = useMemo(
-    () => issues.filter((i) => (cat.size === 0 || cat.has(i.category)) && (stat.size === 0 || stat.has(i.status))),
-    [issues, cat, stat]
+    () => list.filter((i) => (cat.size === 0 || cat.has(i.category)) && (stat.size === 0 || stat.has(i.status))),
+    [list, cat, stat]
   );
 
   function toggle(set: Set<string>, setSet: (s: Set<string>) => void, v: string) {
@@ -93,7 +107,7 @@ function MapPage() {
         </div>
 
         <div className="mt-5 rounded-lg bg-primary/5 p-3 text-xs text-primary">
-          Showing <strong>{filtered.length}</strong> of {issues.length} issues
+          Showing <strong>{filtered.length}</strong> of {list.length} issues
         </div>
       </aside>
 
@@ -144,20 +158,32 @@ function MapPage() {
           )}
         </div>
 
+        {err && <div className="rounded-lg bg-destructive/10 px-3 py-2 text-sm text-destructive">{err}</div>}
+
         <div className="rounded-xl border border-border bg-card">
           <div className="border-b border-border p-4 text-sm font-semibold">Recent Reports</div>
           <div className="divide-y divide-border">
-            {filtered.slice(0, 8).map((i) => (
-              <div key={i.id} className="flex items-center justify-between px-4 py-3">
-                <div>
-                  <div className="text-sm font-medium">{i.title}</div>
-                  <div className="text-xs text-muted-foreground">{i.category} · {i.locality}</div>
+            {loading ? (
+              [1, 2, 3, 4].map((i) => (
+                <div key={i} className="px-4 py-3">
+                  <div className="h-4 w-2/3 animate-pulse rounded bg-muted" />
+                  <div className="mt-2 h-3 w-1/3 animate-pulse rounded bg-muted" />
                 </div>
-                <StatusBadge status={i.status} />
+              ))
+            ) : filtered.length === 0 ? (
+              <div className="p-6 text-center text-sm text-muted-foreground">
+                {list.length === 0 ? "No issues reported yet. Be the first to report one!" : "No issues match your filters."}
               </div>
-            ))}
-            {filtered.length === 0 && (
-              <div className="p-6 text-center text-sm text-muted-foreground">No issues match your filters.</div>
+            ) : (
+              filtered.slice(0, 8).map((i) => (
+                <div key={i.id} className="flex items-center justify-between px-4 py-3">
+                  <div>
+                    <div className="text-sm font-medium">{i?.title}</div>
+                    <div className="text-xs text-muted-foreground">{i?.category} · {i?.locality ?? "—"}</div>
+                  </div>
+                  <StatusBadge status={i.status} />
+                </div>
+              ))
             )}
           </div>
         </div>
