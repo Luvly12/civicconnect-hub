@@ -27,15 +27,27 @@ const STATUS_COLOR: Record<string, string> = {
 };
 
 function MapPage() {
-  const [issues, setIssues] = useState<Issue[]>([]);
+  const [issues, setIssues] = useState<Issue[] | null>(null);
   const [cat, setCat] = useState<Set<string>>(new Set());
   const [stat, setStat] = useState<Set<string>>(new Set());
   const [selected, setSelected] = useState<Issue | null>(null);
+  const [err, setErr] = useState<string | null>(null);
 
   useEffect(() => {
-    supabase.from("issues").select("*").order("created_at", { ascending: false }).then(({ data }) => {
-      setIssues((data as Issue[]) ?? []);
-    });
+    (async () => {
+      try {
+        const { data, error } = await supabase
+          .from("issues")
+          .select("*")
+          .order("created_at", { ascending: false });
+        if (error) throw error;
+        setIssues((data as Issue[]) ?? []);
+      } catch (e: any) {
+        console.error("issues fetch failed", e);
+        setErr(e?.message ?? "Failed to load issues");
+        setIssues([]);
+      }
+    })();
   }, []);
 
   const filtered = useMemo(
